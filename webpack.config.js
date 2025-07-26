@@ -79,7 +79,6 @@ const config = {
       GIPHY_API_KEY: JSON.stringify(process.env.GIPHY_API_KEY),
       REACT_APP_GOOGLE_CALENDAR_API_KEY: JSON.stringify(process.env.REACT_APP_GOOGLE_CALENDAR_API_KEY),
       REACT_APP_GOOGLE_OAUTH_CLIENT_ID: JSON.stringify(process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID),
-      REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET: JSON.stringify(process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET),
       VERSION: JSON.stringify(version),
       UNSPLASH_API_KEY: JSON.stringify(process.env.UNSPLASH_API_KEY),
     }),

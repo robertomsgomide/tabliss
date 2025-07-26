@@ -3,7 +3,6 @@ import { API } from "../../types";
 import { Cache, Data, CalendarEvent, CalendarList } from "./types";
 
 const CLIENT_ID = REACT_APP_GOOGLE_OAUTH_CLIENT_ID;
-const CLIENT_SECRET = REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET;
 
 /**
  * Retrieves a valid access token, refreshing it if it's expired.
@@ -26,7 +25,7 @@ async function getAccessToken(): Promise<string> {
 
   if (isExpired) {
     console.log('Google access token is expired, refreshing...');
-
+  
     const response = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
       headers: {
@@ -34,7 +33,6 @@ async function getAccessToken(): Promise<string> {
       },
       body: new URLSearchParams({
         client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
         refresh_token: storedData.google_refresh_token,
         grant_type: 'refresh_token',
       }),

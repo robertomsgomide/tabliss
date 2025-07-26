@@ -6,7 +6,6 @@ declare global {
   const GIPHY_API_KEY: string;
   const REACT_APP_GOOGLE_CALENDAR_API_KEY: string;
   const REACT_APP_GOOGLE_OAUTH_CLIENT_ID: string;
-  const REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET: string;
   const UNSPLASH_API_KEY: string;
   const VERSION: string;
 

@@ -37,13 +37,12 @@ The Google Calendar widget supports both public and private calendar access:
    - Choose "Web application"
    - Add your development URL to authorized origins (e.g., `http://localhost:8081`)
    - Add your development URL to authorized redirect URIs (e.g., `http://localhost:8081`)
-5. Add both the OAuth Client ID and Client Secret to your `.env` file as `REACT_APP_GOOGLE_OAUTH_CLIENT_ID` and `REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET`
+5. Add the OAuth Client ID to your `.env` file as `REACT_APP_GOOGLE_OAUTH_CLIENT_ID`
 
 **Example `.env` file:**
 ```
 REACT_APP_GOOGLE_CALENDAR_API_KEY=your_api_key_here
 REACT_APP_GOOGLE_OAUTH_CLIENT_ID=your_oauth_client_id_here
-REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET=your_oauth_client_secret_here
 ```
 
 Note: OAuth allows secure access to your private calendars without making them public.
