@@ -1,5 +1,6 @@
 import css from "./css";
 import github from "./github";
+import googleCalendar from "./googleCalendar";
 import greeting from "./greeting";
 import ipInfo from "./ipInfo";
 import js from "./js";
@@ -19,6 +20,7 @@ import joke from "./joke";
 export const widgetConfigs = [
   css,
   github,
+  googleCalendar,
   greeting,
   ipInfo,
   links,

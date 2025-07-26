@@ -1,17 +1,13 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Tabliss",
   "short_name": "Tabliss",
-  "version": "2.6.0",
-  "description": "A beautiful New Tab page with many customisable backgrounds and widgets that does not require any permissions.",
-  "applications": {
+  "version": "1.1.0",
+  "description": "A custom Tabliss extension I've made for myself.",
+  "browser_specific_settings": {
     "gecko": {
-      "id": "extension@tabliss.io",
-      "strict_min_version": "54.0"
+      "id": "custom-tabliss@roberto.local"
     }
-  },
-  "chrome_settings_overrides": {
-    "homepage": "index.html"
   },
   "chrome_url_overrides": {
     "newtab": "index.html"
@@ -22,5 +18,25 @@
     "96": "icons/96.png",
     "128": "icons/128.png"
   },
-  "permissions": ["storage"]
+  "permissions": [
+    "storage",
+    "identity"
+  ],
+  "host_permissions": [
+  "https://www.googleapis.com/*",
+  "https://api.unsplash.com/*",
+  "https://*.giphy.com/*",
+  "https://api.open-meteo.com/*",
+  "https://geocoding-api.open-meteo.com/*", 
+  "https://api.tabliss.io/*",
+  "https://quotes.rest/*",
+  "https://nba.rickyg.io/*",
+  "https://ipwho.is/*",
+  "https://raw.githubusercontent.com/*",
+  "https://v2.jokeapi.dev/*",
+  "https://icons.duckduckgo.com/*"
+  ],
+    "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://oauth2.googleapis.com https://www.googleapis.com https://api.unsplash.com https://*.giphy.com https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.tabliss.io https://quotes.rest https://nba.rickyg.io https://ipwho.is https://raw.githubusercontent.com https://v2.jokeapi.dev https://icons.duckduckgo.com; img-src 'self' data: blob: https://images.unsplash.com https://*.giphy.com https://icons.duckduckgo.com"
+  }
 }

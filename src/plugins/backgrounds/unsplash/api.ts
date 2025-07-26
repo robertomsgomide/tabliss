@@ -43,9 +43,18 @@ export const fetchImages = async ({
   }
 
   const res = await fetch(`${url}?${params}`, { headers, cache: "no-cache" });
+  
+  if (!res.ok) {
+    throw new Error(`Unsplash API error: ${res.status} ${res.statusText}`);
+  }
+  
   const body = await res.json();
 
   // TODO: validate types
+  
+  if (!Array.isArray(body)) {
+    throw new Error('Unsplash API did not return an array');
+  }
 
   return body.map((item: any) => ({
     src: item.urls.raw,

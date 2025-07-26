@@ -22,12 +22,27 @@ export async function getGif(
   );
 
   loader.push();
-  const res = await (await fetch(request)).json();
-  const data = await (await fetch(res.data.images.original.webp)).blob();
-  loader.pop();
-
-  return {
-    data,
-    link: res.data.url,
-  };
+  
+  try {
+    const response = await fetch(request);
+    
+    if (!response.ok) {
+      throw new Error(`Giphy API error: ${response.status} ${response.statusText}`);
+    }
+    
+    const res = await response.json();
+    
+    if (!res.data || !res.data.images || !res.data.images.original) {
+      throw new Error('Invalid Giphy API response');
+    }
+    
+    const data = await (await fetch(res.data.images.original.webp)).blob();
+    
+    return {
+      data,
+      link: res.data.url,
+    };
+  } finally {
+    loader.pop();
+  }
 }
