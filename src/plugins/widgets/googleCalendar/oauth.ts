@@ -2,6 +2,7 @@ import browser from 'webextension-polyfill';
 
 // Only the CLIENT_ID is needed for PKCE flow
 const CLIENT_ID = REACT_APP_GOOGLE_OAUTH_CLIENT_ID;
+const CLIENT_SECRET = REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET; // Desktop‑app secret is public by design; see Google docs.
 
 /**
  * Generate a cryptographically random string
@@ -52,7 +53,9 @@ async function generatePKCEPair() {
  * and a refresh_token, and stores them securely.
  */
 export async function startOAuthFlow(): Promise<void> {
-  const REDIRECT_URI = browser.identity.getRedirectURL();
+  const raw = browser.identity.getRedirectURL();
+  const sub = new URL(raw).hostname.split('.')[0];
+  const REDIRECT_URI = `http://127.0.0.1/mozoauth2/${sub}`;
   const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
 
   // Step 1: Generate PKCE pair
@@ -101,7 +104,8 @@ export async function startOAuthFlow(): Promise<void> {
       body: new URLSearchParams({
         code: code,
         client_id: CLIENT_ID,
-        code_verifier: pkce_code_verifier, // This replaces the client_secret
+        client_secret: CLIENT_SECRET,
+        code_verifier: pkce_code_verifier,
         redirect_uri: REDIRECT_URI,
         grant_type: 'authorization_code',
       }),

@@ -65,8 +65,17 @@ const GoogleCalendarSettings: FC<Props> = ({ data = defaultData, setData }) => {
     setData({
       ...data,
       // We no longer store tokens in the widget's data object.
-      calendarId: '',
+      calendarIds: [],
     });
+  };
+
+  const handleCalendarToggle = (calendarId: string) => {
+    const isSelected = data.calendarIds.includes(calendarId);
+    const newCalendarIds = isSelected
+      ? data.calendarIds.filter(id => id !== calendarId)
+      : [...data.calendarIds, calendarId];
+    
+    setData({ ...data, calendarIds: newCalendarIds });
   };
 
   return (
@@ -79,7 +88,7 @@ const GoogleCalendarSettings: FC<Props> = ({ data = defaultData, setData }) => {
           name="authMethod"
           value="apiKey"
           checked={data.authMethod === 'apiKey'}
-          onChange={() => setData({ ...data, authMethod: 'apiKey', calendarId: '' })}
+          onChange={() => setData({ ...data, authMethod: 'apiKey', calendarIds: [] })}
         />
         Public Calendar (API Key)
       </label>
@@ -90,7 +99,7 @@ const GoogleCalendarSettings: FC<Props> = ({ data = defaultData, setData }) => {
           name="authMethod"
           value="oauth"
           checked={data.authMethod === 'oauth'}
-          onChange={() => setData({ ...data, authMethod: 'oauth', calendarId: '' })}
+          onChange={() => setData({ ...data, authMethod: 'oauth', calendarIds: [] })}
         />
         Private Calendar (OAuth)
       </label>
@@ -123,8 +132,8 @@ const GoogleCalendarSettings: FC<Props> = ({ data = defaultData, setData }) => {
           Calendar ID
           <DebounceInput
             type="text"
-            value={data.calendarId}
-            onChange={(calendarId) => setData({ ...data, calendarId })}
+            value={data.calendarIds[0] || ''}
+            onChange={(calendarId) => setData({ ...data, calendarIds: calendarId ? [calendarId] : [] })}
             placeholder="example@gmail.com or calendar-id@group.calendar.google.com"
           />
           <small>
@@ -132,24 +141,29 @@ const GoogleCalendarSettings: FC<Props> = ({ data = defaultData, setData }) => {
           </small>
         </label>
       ) : data.authMethod === 'oauth' && isAuthenticated ? (
-        <label>
-          Select Calendar
+        <div>
           {loadingCalendars ? (
             <div className="loading-calendars">Loading your calendars...</div>
           ) : (
-            <select
-              value={data.calendarId}
-              onChange={(e) => setData({ ...data, calendarId: e.target.value })}
-            >
-              <option value="">-- Select a calendar --</option>
+            <div className="calendar-checkboxes">
               {calendars.map((calendar) => (
-                <option key={calendar.id} value={calendar.id}>
+                <label key={calendar.id} className="calendar-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={data.calendarIds.includes(calendar.id)}
+                    onChange={() => handleCalendarToggle(calendar.id)}
+                  />
                   {calendar.summary} {calendar.primary ? '(Primary)' : ''}
-                </option>
+                </label>
               ))}
-            </select>
+            </div>
           )}
-        </label>
+          {calendars.length > 0 && (
+            <small>
+              Selected: {data.calendarIds.length} calendar{data.calendarIds.length !== 1 ? 's' : ''}
+            </small>
+          )}
+        </div>
       ) : data.authMethod === 'oauth' ? (
         <p className="calendar-note">Sign in to see your available calendars</p>
       ) : null}

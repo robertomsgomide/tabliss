@@ -17,7 +17,7 @@ export type CalendarEvent = {
 };
 
 export type Data = {
-  calendarId: string;
+  calendarIds: string[];
   maxResults: number;
   showUpcoming: boolean;
   showToday: boolean;
@@ -51,7 +51,7 @@ export type CalendarList = {
 };
 
 export const defaultData: Data = {
-  calendarId: "",
+  calendarIds: [],
   maxResults: 5,
   showUpcoming: true,
   showToday: true,

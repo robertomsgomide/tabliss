@@ -33,16 +33,21 @@ The Google Calendar widget supports both public and private calendar access:
 2. Create a new project or select an existing one
 3. Enable the Google Calendar API
 4. Create OAuth 2.0 credentials:
-   - Go to "Credentials" → "Create Credentials" → "OAuth 2.0 Client IDs"
-   - Choose "Web application"
-   - Add your development URL to authorized origins (e.g., `http://localhost:8081`)
-   - Add your development URL to authorized redirect URIs (e.g., `http://localhost:8081`)
-5. Add the OAuth Client ID to your `.env` file as `REACT_APP_GOOGLE_OAUTH_CLIENT_ID`
+   - **Firefox build ➜ choose “Desktop App”**
+   - **Chrome build ➜ choose “Chrome Extension”** and enter the extension ID.
+   Google will download a JSON file—open it and copy:
+   * `"client_id"` → `REACT_APP_GOOGLE_OAUTH_CLIENT_ID`
+   * `"client_secret"` → `REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET`
+   (Google doesn’t treat this secret as confidential for installed apps.)
+5. Add the OAuth Client ID and secret to your `.env` file as `REACT_APP_GOOGLE_OAUTH_CLIENT_ID` and `REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET`
 
 **Example `.env` file:**
 ```
+GIPHY_API_KEY=your_giphy_api_key_here
+UNSPLASH_API_KEY=your_unplash_api_key_here
 REACT_APP_GOOGLE_CALENDAR_API_KEY=your_api_key_here
 REACT_APP_GOOGLE_OAUTH_CLIENT_ID=your_oauth_client_id_here
+REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET=your_oath_client_secret_here
 ```
 
 Note: OAuth allows secure access to your private calendars without making them public.

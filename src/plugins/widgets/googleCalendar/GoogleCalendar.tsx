@@ -6,7 +6,6 @@ import { Icon } from "../../../views/shared";
 import { getCalendarEvents, formatEventDate, isEventToday } from "./api";
 import { Props, defaultData } from "./types";
 import "./GoogleCalendar.sass";
-
 const GoogleCalendar: FC<Props> = ({ 
   cache, 
   data = defaultData, 
@@ -28,6 +27,18 @@ const GoogleCalendar: FC<Props> = ({
       }
     };
     checkAuthStatus();
+    const listener = (
+      changes: Record<string, browser.Storage.StorageChange>,
+      area: string
+    ) => {
+      if (area === 'local' && changes.google_refresh_token) {
+        setIsAuthenticated(!!changes.google_refresh_token.newValue);
+      }
+    };
+    browser.storage.onChanged.addListener(listener);
+    return () => {
+      browser.storage.onChanged.removeListener(listener);
+    };
   }, [data.authMethod]);
 
   // Cache events for 30 minutes.
@@ -35,7 +46,7 @@ const GoogleCalendar: FC<Props> = ({
     () => {
       // The condition is now simpler. If using OAuth, we rely on `isAuthenticated`.
       // The `getCalendarEvents` function will handle the rest.
-      const shouldFetch = data.calendarId && (data.authMethod === 'apiKey' || (data.authMethod === 'oauth' && isAuthenticated));
+      const shouldFetch = data.calendarIds.length > 0 && (data.authMethod === 'apiKey' || (data.authMethod === 'oauth' && isAuthenticated));
 
       if (shouldFetch) {
         getCalendarEvents(data, loader)
@@ -44,8 +55,8 @@ const GoogleCalendar: FC<Props> = ({
       }
     },
     cache ? cache.timestamp + 0.5 * HOURS : 0,
-    // The dependency array is updated to remove accessToken and use isAuthenticated instead.
-    [data.calendarId, data.maxResults, data.timeRange, data.authMethod, isAuthenticated]
+    // The dependency array is updated to use calendarIds instead of calendarId.
+    [data.calendarIds, data.maxResults, data.timeRange, data.authMethod, isAuthenticated]
   );
 
   // Filter events based on settings
@@ -60,12 +71,19 @@ const GoogleCalendar: FC<Props> = ({
   }) || [];
 
   // Show loading state
-  if (!cache && data.calendarId) {
+  if (!cache && data.calendarIds.length > 0) {
     return (
       <div className="GoogleCalendar loading">
         <div className="calendar-header">
           <Icon name="calendar" />
-          <span>Calendar</span>
+          <a 
+            href="https://calendar.google.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            title="Open Google Calendar"
+          >
+            Calendar
+          </a>
         </div>
         <div className="loading-text">Loading events...</div>
       </div>
@@ -73,12 +91,19 @@ const GoogleCalendar: FC<Props> = ({
   }
 
   // Show setup message if no calendar is selected.
-  if (!data.calendarId) {
+  if (data.calendarIds.length === 0) {
     return (
       <div className="GoogleCalendar setup">
         <div className="calendar-header">
           <Icon name="calendar" />
-          <span>Calendar</span>
+          <a 
+            href="https://calendar.google.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            title="Open Google Calendar"
+          >
+            Calendar
+          </a>
         </div>
         <div className="setup-message">
           <p>Configure your calendar in settings</p>
@@ -93,7 +118,14 @@ const GoogleCalendar: FC<Props> = ({
       <div className="GoogleCalendar auth-needed">
         <div className="calendar-header">
           <Icon name="calendar" />
-          <span>Calendar</span>
+          <a 
+            href="https://calendar.google.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            title="Open Google Calendar"
+          >
+            Calendar
+          </a>
         </div>
         <div className="auth-message">
           <p>Sign in required</p>
@@ -109,7 +141,14 @@ const GoogleCalendar: FC<Props> = ({
       <div className="GoogleCalendar empty">
         <div className="calendar-header">
           <Icon name="calendar" />
-          <span>Calendar</span>
+          <a 
+            href="https://calendar.google.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            title="Open Google Calendar"
+          >
+            Calendar
+          </a>
         </div>
         <div className="no-events">
           <p>No upcoming events</p>
@@ -122,7 +161,14 @@ const GoogleCalendar: FC<Props> = ({
     <div className="GoogleCalendar">
       <div className="calendar-header">
         <Icon name="calendar" />
-        <span>Calendar</span>
+        <a 
+          href="https://calendar.google.com" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          title="Open Google Calendar"
+        >
+          Calendar
+        </a>
       </div>
       
       <div className="events-list">

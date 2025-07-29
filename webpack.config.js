@@ -76,10 +76,11 @@ const config = {
     new webpack.DefinePlugin({
       BUILD_TARGET: JSON.stringify(buildTarget),
       DEV: JSON.stringify(!isProduction),
+      VERSION: JSON.stringify(version),
       GIPHY_API_KEY: JSON.stringify(process.env.GIPHY_API_KEY),
       REACT_APP_GOOGLE_CALENDAR_API_KEY: JSON.stringify(process.env.REACT_APP_GOOGLE_CALENDAR_API_KEY),
       REACT_APP_GOOGLE_OAUTH_CLIENT_ID: JSON.stringify(process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID),
-      VERSION: JSON.stringify(version),
+      REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET: JSON.stringify(process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET), // Desktop‑app secret is public by design; see Google docs.
       UNSPLASH_API_KEY: JSON.stringify(process.env.UNSPLASH_API_KEY),
     }),
   ],
